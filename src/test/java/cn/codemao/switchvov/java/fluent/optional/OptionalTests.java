@@ -29,7 +29,8 @@ public class OptionalTests {
     @Test
     public void t3() {
         // map
-        Optional<Integer> number = Optional.of("123456").map(Integer::valueOf);
+        String str = "123456";
+        Optional<Integer> number = Optional.ofNullable(str).map(Integer::valueOf);
         if (number.isPresent()) {
             System.out.println(number.get());
         }

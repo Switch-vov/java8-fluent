@@ -53,12 +53,6 @@ public class ThreadTests {
         }
     }
 
-    public Stream<CompletableFuture<List<Hero>>> getFuturesStream(List<List<Integer>> idSubLists) {
-        return idSubLists.stream()
-                .map(ids -> CompletableFuture.supplyAsync(
-                        () -> ids.parallelStream().map(heroMapping::get).collect(toList()), taskExecutor));
-    }
-
     @Test
     public void test() {
         int partitionSize = 10;
@@ -71,6 +65,12 @@ public class ThreadTests {
         List<Void> results = batchFutures.stream()
                 .map(CompletableFuture::join)
                 .collect(Collectors.toList());
+    }
+
+    private Stream<CompletableFuture<List<Hero>>> getFuturesStream(List<List<Integer>> idSubLists) {
+        return idSubLists.stream()
+                .map(ids -> CompletableFuture.supplyAsync(
+                        () -> ids.parallelStream().map(heroMapping::get).collect(toList()), taskExecutor));
     }
 
     private List<Pair<Integer, String>> batchMap(List<Hero> heroes) {
